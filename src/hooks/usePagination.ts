@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface UsePaginationProps {
   totalItems: number;
@@ -25,6 +25,11 @@ export function usePagination({
   initialPage = 1,
 }: UsePaginationProps): UsePaginationReturn {
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
+
+  // This prevents the user from being stranded on a non-existent page
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [itemsPerPage]);
 
   const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
 
